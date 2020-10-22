@@ -1,5 +1,6 @@
 import reports, data, sys
 
+#test note
 input_type = sys.argv[1].lower()
 report_type = sys.argv[2].lower()
 
