@@ -10,7 +10,7 @@ def text_report(list_t, input_type):
     now = datetime.now()
     # dd/mm/YY H:M:S
     dt_string = now.strftime("%Y-%m-%d %H:%M")
-    print(f"Timestamp {dt_string}")
+    print(f"Timestamp: {dt_string}")
 
     #Device
     print(f'Device: {input_type.capitalize()}')
@@ -18,21 +18,29 @@ def text_report(list_t, input_type):
     print(f'Number: {len(list_t)}')
     #Average price
     total = 0 
-    for i in list_t:
-        i_split = i.split(',')
-        total += float(i_split[6])
+    for h in list_t:
+        h_split = h.split(',')
+        total += float(h_split[6])
     average = total / len(list_t)
-    print(f'Average price: ${average:.2f}')
+    print(f'Average Price: ${average:.2f}')
         
     #Min price
+    prices = []
+    for i in list_t:
+        i_split = i.split(',')
+        price = i_split[6]
+        prices.append(price)
+    print(f'Minimum Price: {min(prices)}')
+
 
     #Max price
+    print(f'Maximum Price: {max(prices)}')
 
     #median ram
     ram = 0 
-    for i in list_t:
-        i_split = i.split(',')
-        ram += int(i_split[3])
+    for j in list_t:
+        j_split = j.split(',')
+        ram += int(j_split[3])
     average_ram = ram / len(list_t)
     if average_ram <= 20:
         new_ram = 8
@@ -45,9 +53,9 @@ def text_report(list_t, input_type):
         print(f'Median RAM: {new_ram}')
     #os 
     master = ''
-    for i in list_t:
-        i_split = i.split(',')
-        both = i_split[4:6]
+    for k in list_t:
+        k_split = k.split(',')
+        both = k_split[4:6]
         a = both.pop(0)
         b = both.pop(0)
         all_string = f' {a} {b},'

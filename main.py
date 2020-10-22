@@ -1,6 +1,5 @@
 import reports, data, sys
 
-#test note
 input_type = sys.argv[1].lower()
 report_type = sys.argv[2].lower()
 
@@ -12,10 +11,9 @@ def main(input_type, report_type):
         for i in phone_data:
             i.split(',')
             phone_list.append(i)
-        #pass in list into reports function so they can use them
+        ##pass in phone_list into the text_report function 
         if report_type == 'text':
             print('text')
-            report = report_type
             reports.text_report(phone_list, input_type)
         elif report_type == 'csv':
             print('csv')
@@ -30,9 +28,10 @@ def main(input_type, report_type):
         for i in tablet_data:
             i.split(',')
             tablet_list.append(i)
-        print(tablet_list)
+        #pass in tablet_list into the text_report function 
         if report_type == 'text':
             print('text')
+            reports.text_report(tablet_list, input_type)
         elif report_type == 'csv':
             print('csv')
         elif report_type == 'json':
