@@ -20,6 +20,7 @@ def main(input_type, report_type):
             reports.csv_report(phone_list, input_type)
         elif report_type == 'json':
             print('json')
+            reports.json_report(phone_list, input_type)
         else:
             print('Report type must be either text, csv or json')
     elif input_type == 'tablet':
@@ -29,14 +30,17 @@ def main(input_type, report_type):
         for i in tablet_data:
             i.split(',')
             tablet_list.append(i)
+        print(tablet_list)
         #pass in tablet_list into the text_report function 
         if report_type == 'text':
             print('text')
             reports.text_report(tablet_list, input_type)
         elif report_type == 'csv':
             print('csv')
+            reports.csv_report(tablet_list, input_type)
         elif report_type == 'json':
             print('json')
+            reports.json_report(tablet_list, input_type)
         else:
             print('Report type must be either text, csv or json')
     elif input_type == 'laptop':
@@ -46,14 +50,15 @@ def main(input_type, report_type):
         for i in laptop_data:
             i.split(',')
             laptop_list.append(i)
-        print(laptop_list)
         if report_type == 'text':
             print('text')
             reports.text_report(laptop_list, input_type)
         elif report_type == 'csv':
             print('csv')
+            reports.csv_report(laptop_list, input_type)
         elif report_type == 'json':
             print('json')
+            reports.json_report(laptop_list, input_type)
         else:
             print('Report type must be either text, csv or json')
     else:
