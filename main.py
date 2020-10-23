@@ -17,6 +17,7 @@ def main(input_type, report_type):
             reports.text_report(phone_list, input_type)
         elif report_type == 'csv':
             print('csv')
+            reports.csv_report(phone_list, input_type)
         elif report_type == 'json':
             print('json')
         else:
@@ -48,6 +49,7 @@ def main(input_type, report_type):
         print(laptop_list)
         if report_type == 'text':
             print('text')
+            reports.text_report(laptop_list, input_type)
         elif report_type == 'csv':
             print('csv')
         elif report_type == 'json':
