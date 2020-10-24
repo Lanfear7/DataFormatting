@@ -3,12 +3,11 @@ from datetime import datetime
 import main
 
 def text_report(list_t, input_type):
-    '''list_t = literal list  of items (phone, laptop, tablet) *** input_type = item to generate report for (phone, tablet, laptop) '''
-    print('*****in reports****')
+    '''list_t = literal list  of items (phone, laptop, tablet) *** input_type = item to generate report for (phone, tablet, laptop) formatting for Text'''
 
     #Timestamp
     now = datetime.now()
-    # dd/mm/YY H:M:S
+    # dd/mm/YY H:M
     dt_string = now.strftime("%Y-%m-%d %H:%M")
     print(f"Timestamp: {dt_string}")
 
@@ -24,17 +23,20 @@ def text_report(list_t, input_type):
     average = total / len(list_t)
     print(f'Average Price: ${average:.2f}')
         
-    #Min price
-    prices = []
+    #Min / Max
+    master_list = []
     for i in list_t:
-        i_split = i.split(',')
-        price = i_split[6]
-        prices.append(price)
-    print(f'Minimum Price: ${min(prices)}')
-
-
-    #Max price
-    print(f'Maximum Price: ${max(prices)}')
+        new_list = i.split(',')
+        master_list.append(new_list[6])
+    float_list = []
+    for i in master_list:
+        current_value = i
+        new_float = float(current_value)
+        float_list.append(new_float)
+        maximum = max(float_list)
+    max_formatted = format(maximum, '.2f')
+    print(f'Minimum Price: ${min(float_list)}')
+    print(f'Maximum Price: ${max_formatted}')
 
     #median ram
     ram = 0 
@@ -43,14 +45,14 @@ def text_report(list_t, input_type):
         ram += int(j_split[3])
     average_ram = ram / len(list_t)
     if average_ram <= 20:
-        new_ram = 8
-        print(f'Median RAM: {new_ram}')
+        new_ram = 8.0
+        print(f'Median RAM: {new_ram} GB')
     elif average_ram >20.0 and average_ram <48.0:
-        new_ram = 32
+        new_ram = 32.0
         print(f'Median RAM: {new_ram} GB')
     elif average_ram > 20 and average_ram > 48:
-        new_ram = 64
-        print(f'Median RAM: {new_ram}')
+        new_ram = 64.0
+        print(f'Median RAM: {new_ram} GB')
     #os 
     master = ''
     for k in list_t:
@@ -64,10 +66,9 @@ def text_report(list_t, input_type):
     print(f'Operating System:{last_comma}')
 
 def csv_report(list_t, input_type):
-    '''list_t = literal list  of items (phone, laptop, tablet) *** input_type = item to generate report for (phone, tablet, laptop) '''
-    print('*****in reports****')
+    '''list_t = literal list  of items (phone, laptop, tablet) *** input_type = item to generate report for (phone, tablet, laptop) formatting for CSV'''
     now = datetime.now()
-    # dd/mm/YY H:M:S
+    # dd/mm/YY H:M
     dt_string = now.strftime("%Y-%m-%d %H:%M")
 
     #average
@@ -78,6 +79,16 @@ def csv_report(list_t, input_type):
     average = total / len(list_t)
 
     #Min / Max 
+    master_list = []
+    for i in list_t:
+        new_list = i.split(',')
+        master_list.append(new_list[6])
+    float_list = []
+    for i in master_list:
+        current_value = i
+        new_float = float(current_value)
+        float_list.append(new_float)
+
 
 
 
@@ -105,11 +116,12 @@ def csv_report(list_t, input_type):
     master_csv = str_csv.rstrip('/')
 
     #csv 
-    print(f'{dt_string},{input_type.capitalize()},{len(list_t)},Average{average:.2f},min, max,{new_ram},{master_csv}')
+    print(f'{dt_string},{input_type.capitalize()},{len(list_t)},{average:.2f},{min(float_list)},{max(float_list)},{new_ram},{master_csv}')
 
 def json_report(list_t, input_type):
+    '''list_t = literal list  of items (phone, laptop, tablet) *** input_type = item to generate report for (phone, tablet, laptop)  formatting for JSON '''
     now = datetime.now()
-    # dd/mm/YY H:M:S
+    # dd/mm/YY H:M
     dt_string = now.strftime("%Y-%m-%d %H:%M")
 
     #Average price
@@ -118,7 +130,16 @@ def json_report(list_t, input_type):
         h_split = h.split(',')
         total += float(h_split[6])
     average = total / len(list_t)
-    print(f'Average Price: $')
+
+    master_list = []
+    for i in list_t:
+        new_list = i.split(',')
+        master_list.append(new_list[6])
+    float_list = []
+    for i in master_list:
+        current_value = i
+        new_float = float(current_value)
+        float_list.append(new_float)
 
     #RAM
     ram = 0 
@@ -140,19 +161,18 @@ def json_report(list_t, input_type):
         both = k_split[4:6]
         a = both.pop(0)
         b = both.pop(0)
-        all_string = f'{a} {b},'
+        all_string = f'\n          "{a} {b}",'
         str_json += all_string
     master_json = str_json.rstrip(',')
-
     print('{' '\n'
         f'      \"date_time\": "{dt_string}",''\n'
         f'      \"device_type\": "{input_type.capitalize()}",''\n'
         f'      \"number\": {len(list_t)},''\n'
         f'      \"average_price\": {average:.2f},''\n'
-        f'      \"min_price\": phone,''\n'
-        f'      \"max_price\": phone,''\n'
+        f'      \"min_price\": {min(float_list)},''\n'
+        f'      \"max_price\": {max(float_list)},''\n'
         f'      \"median_ram\": {new_ram},''\n'
-        f'      \"operating_system\": "{master_json}"''\n'
+        f'      \"operating_system\": [{master_json}      \n     ] \n '
         '}')
 
 

@@ -30,7 +30,6 @@ def main(input_type, report_type):
         for i in tablet_data:
             i.split(',')
             tablet_list.append(i)
-        print(tablet_list)
         #pass in tablet_list into the text_report function 
         if report_type == 'text':
             print('text')
