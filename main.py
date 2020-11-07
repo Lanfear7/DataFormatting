@@ -57,7 +57,11 @@ def main():
         ram.append(int(fields[RAM_INDEX]))
         oses.append(fields[OS_INDEX] + " " + fields[OS_VERSION_INDEX])
 
-    os_single = list(dict.fromkeys(oses))
+    os_single = []
+    for i in oses: 
+        if i not in os_single: 
+            os_single.append(i) 
+    reverse = sorted(os_single, reverse=True)
 
 
 
@@ -72,19 +76,19 @@ def main():
     if "text" == report_type:
         reports.text_report(current_datetime, device_name, num_devices,
                             avg_price, min_price, max_price,
-                            median_ram, os_single, file_name)
+                            median_ram, reverse, file_name)
     elif "json" == report_type:
         reports.json_report(current_datetime, device_name, num_devices,
                             avg_price, min_price, max_price,
-                            median_ram, os_single, file_name)
+                            median_ram, reverse, file_name)
     elif "csv" == report_type:
         reports.csv_report(current_datetime, device_name, num_devices,
                            avg_price, min_price, max_price,
-                           median_ram, os_single, file_name)
+                           median_ram, reverse, file_name)
     elif "yaml" == report_type:
         reports.yaml_report(current_datetime, device_name, num_devices,
                            avg_price, min_price, max_price,
-                           median_ram, os_single, file_name)
+                           median_ram, reverse, file_name)
 
 
 if __name__ == "__main__":
