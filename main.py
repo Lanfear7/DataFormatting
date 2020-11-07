@@ -1,69 +1,92 @@
-import reports, data, sys
+import sys
+import data
+import reports
+import datetime
+import statistics
 
-input_type = sys.argv[1].lower()
-report_type = sys.argv[2].lower()
+PRICE_INDEX = 6
+RAM_INDEX = 3
+OS_INDEX = 4
+OS_VERSION_INDEX = 5
 
-def main(input_type, report_type):
+
+def main():
+    """Displaying device information in the format that has passed to the command line argument"""
+
+    input_type_list = ("phone", "tablet", "laptop")
+    report_type_list = ("text", "csv", "json", "yaml")
+
+    if len(sys.argv) != 4:
+        print("Invalid number of command line arguments")
+        exit(0)
+
+    input_type = sys.argv[1]
+    report_type = sys.argv[2]
+    file_name = sys.argv[3]
+
+    if input_type not in input_type_list:
+        print("Input type must be either phone, tablet or laptop.")
+        exit(0)
+
+    if report_type not in report_type_list:
+        print("Report type must be either text, csv or yaml.")
+        exit(0)
+
+    if file_name == '':
+        print('Report Filename must be a non-empty string ')
+        exit(0)
+        
+    results = []
+
     if input_type == 'phone':
-        print('phone')
-        phone_data = data.get_phone_info_list()
-        phone_list = []
-        for i in phone_data:
-            i.split(',')
-            phone_list.append(i)
-        ##pass in phone_list into the text_report function 
-        if report_type == 'text':
-            print('text')
-            reports.text_report(phone_list, input_type)
-        elif report_type == 'csv':
-            print('csv')
-            reports.csv_report(phone_list, input_type)
-        elif report_type == 'json':
-            print('json')
-            reports.json_report(phone_list, input_type)
-        else:
-            print('Report type must be either text, csv or json')
+        results.extend(data.get_phone_info_list())
     elif input_type == 'tablet':
-        print('tablet')
-        tablet_data = data.get_tablet_info_list()
-        tablet_list = []
-        for i in tablet_data:
-            i.split(',')
-            tablet_list.append(i)
-        #pass in tablet_list into the text_report function 
-        if report_type == 'text':
-            print('text')
-            reports.text_report(tablet_list, input_type)
-        elif report_type == 'csv':
-            print('csv')
-            reports.csv_report(tablet_list, input_type)
-        elif report_type == 'json':
-            print('json')
-            reports.json_report(tablet_list, input_type)
-        else:
-            print('Report type must be either text, csv or json')
+        results.extend(data.get_tablet_info_list())
     elif input_type == 'laptop':
-        print('laptop')
-        laptop_data = data.get_laptop_info_list()
-        laptop_list = []
-        for i in laptop_data:
-            i.split(',')
-            laptop_list.append(i)
-        if report_type == 'text':
-            print('text')
-            reports.text_report(laptop_list, input_type)
-        elif report_type == 'csv':
-            print('csv')
-            reports.csv_report(laptop_list, input_type)
-        elif report_type == 'json':
-            print('json')
-            reports.json_report(laptop_list, input_type)
-        else:
-            print('Report type must be either text, csv or json')
-    else:
-        print('Input type must be either phone, table or laptop ')
+        results.extend(data.get_laptop_info_list())
+
+    prices = []
+    ram = []
+    oses = []
+
+    # Extract the relevant data from the results. The format is the
+    # same for all the data types.
+    for result in results:
+        fields = result.split(",")
+        prices.append(float(fields[PRICE_INDEX]))
+        ram.append(int(fields[RAM_INDEX]))
+        oses.append(fields[OS_INDEX] + " " + fields[OS_VERSION_INDEX])
+
+    os_single = list(dict.fromkeys(oses))
 
 
 
-if __name__=='__main__':
-    main(input_type, report_type)
+    current_datetime = datetime.datetime.now()
+    device_name = input_type.title()
+    num_devices = len(results)
+    avg_price = round(statistics.mean(prices), 2)
+    min_price = min(prices)
+    max_price = max(prices)
+    median_ram = statistics.median(ram)
+
+    if "text" == report_type:
+        reports.text_report(current_datetime, device_name, num_devices,
+                            avg_price, min_price, max_price,
+                            median_ram, os_single, file_name)
+    elif "json" == report_type:
+        reports.json_report(current_datetime, device_name, num_devices,
+                            avg_price, min_price, max_price,
+                            median_ram, os_single, file_name)
+    elif "csv" == report_type:
+        reports.csv_report(current_datetime, device_name, num_devices,
+                           avg_price, min_price, max_price,
+                           median_ram, os_single, file_name)
+    elif "yaml" == report_type:
+        reports.yaml_report(current_datetime, device_name, num_devices,
+                           avg_price, min_price, max_price,
+                           median_ram, os_single, file_name)
+
+
+if __name__ == "__main__":
+    main()
+
